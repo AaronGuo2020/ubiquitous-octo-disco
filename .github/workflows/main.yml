@@ -1,13 +1,13 @@
 name: Wait 4 Hours Every 15 Minutes
 
 on:
-schedule:
-- cron: "*/15 * * * *" # every 15 minutes
-workflow_dispatch: # optional, run manually if needed
+  schedule:
+    - cron: "*/15 * * * *" # every 15 minutes
+  workflow_dispatch: # optional, run manually if needed
 
 jobs:
-wait-job:
-runs-on: ubuntu-latest
-steps:
-- name: Sleep for 4 hours
-run: sleep 4h
+  wait-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sleep for 4 hours
+        run: sleep 4h
